@@ -1,0 +1,22 @@
+{
+  "name": "httputils-ssr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "httputils-ssr": "./index.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "source-map-support": "^0.5.12",
+    "vue-server-renderer": "^2.6.10"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "3bl3gamer",
+  "license": "ISC"
+}
