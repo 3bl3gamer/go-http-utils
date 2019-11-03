@@ -60,6 +60,7 @@ const CtxKeyMain = ctxKey("main")
 var jsonHandlerType = reflect.TypeOf(HandlerExtJSON(nil))
 var tmplHandlerType = reflect.TypeOf(HandlerExtTmpl(nil))
 var extHandlerType = reflect.TypeOf(HandlerExt(nil))
+var middlewareType = reflect.TypeOf(Middleware(nil))
 
 // func IsIdempotent(method string) bool {
 // 	return method == "GET" || method ==  "HEAD" || method == "OPTIONS" || method == "TRACE"
@@ -92,7 +93,7 @@ func (w *Wrapper) WrapChain(chain ...interface{}) httprouter.Handle {
 	}
 
 	for i := len(chain) - 2; i >= 0; i-- {
-		handler = chain[i].(Middleware)(handler)
+		handler = reflect.ValueOf(chain[i]).Convert(middlewareType).Interface().(Middleware)(handler)
 	}
 	if w.SessionStore != nil {
 		handler = WrapSession(w.SessionStore, handler)
@@ -106,6 +107,7 @@ func (w *Wrapper) WrapChain(chain ...interface{}) httprouter.Handle {
 func (w *Wrapper) wrap(format HndFormat, handle HandlerExt) httprouter.Handle {
 	handleError := func(err error, wr http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		w.LogError(err, r)
+		wr.WriteHeader(http.StatusInternalServerError)
 		if format == Json {
 			if w.ShowErrorDetails {
 				json.NewEncoder(wr).Encode(JsonError{false, 500, "SERVER_ERROR", merry.Details(err)})
