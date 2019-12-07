@@ -151,6 +151,10 @@ func AsJSON(handle HandlerExtJSON) HandlerExt {
 			return merry.Wrap(err)
 		}
 
+		if res == nil {
+			return nil //обработчик уже чем-то ответил, генерить ответ не нужно
+		}
+
 		switch t := res.(type) {
 		case JsonOk:
 			t.Ok = true
