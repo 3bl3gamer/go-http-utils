@@ -193,7 +193,7 @@ func (h *TemplateHandler) ParseTemplate(path string) (*template.Template, error)
 	tmplGlob, err := tmpl.ParseGlob(h.BasePath + "/_*.html")
 	if err == nil {
 		tmpl = tmplGlob
-	} else if !strings.HasPrefix(err.Error(), "template: pattern matches no files") {
+	} else if !strings.HasPrefix(err.Error(), "html/template: pattern matches no files") {
 		return nil, merry.Wrap(err)
 	}
 
