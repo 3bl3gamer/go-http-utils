@@ -160,9 +160,18 @@ func AsJSON(handle HandlerExtJSON) HandlerExt {
 			t.Ok = true
 			t.Events = ctx.ServerEvents
 			wr.WriteHeader(http.StatusOK)
+		case *JsonOk:
+			t.Ok = true
+			t.Events = ctx.ServerEvents
+			wr.WriteHeader(http.StatusOK)
+
 		case JsonError:
 			t.Ok = false
 			wr.WriteHeader(int(t.Code))
+		case *JsonError:
+			t.Ok = false
+			wr.WriteHeader(int(t.Code))
+
 		default:
 			res = JsonOk{true, res, ctx.ServerEvents}
 		}
